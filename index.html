@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8c1c13">
+<title>Ticket to Ride — Estrada Colorida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===== TELA INICIAL ===== -->
+<section id="tela-menu" class="tela ativa">
+  <!-- Letreiro em CSS: só aparece se img/capa.jpg não existir (a arte já traz o título) -->
+  <div class="menu-topo">
+    <h1 class="titulo">Ticket to Ride</h1>
+    <p class="lema">Explore. Conecte. Viaje.</p>
+  </div>
+  <div class="menu-botoes">
+    <button id="btn-nova" class="btn grande verde">▶ NOVA PARTIDA</button>
+    <button id="btn-carregar" class="btn grande azul">⇧ CARREGAR</button>
+    <button id="btn-regras" class="btn grande laranja">? COMO JOGAR</button>
+  </div>
+  <p class="versao">Estrada Colorida • v1.8</p>
+</section>
+
+<!-- ===== CONFIGURAR JOGADORES ===== -->
+<section id="tela-config" class="tela">
+  <h2>⚙️ Configure os Jogadores</h2>
+  <div id="qtd-jogadores" class="qtd-botoes">
+    <p>Quantos jogadores vão embarcar?</p>
+    <button class="btn cinza qbtn" data-n="2">2</button>
+    <button class="btn cinza qbtn" data-n="3">3</button>
+    <button class="btn cinza qbtn" data-n="4">4</button>
+    <button class="btn cinza qbtn" data-n="5">5</button>
+    <button class="btn cinza qbtn" data-n="6">6</button>
+  </div>
+  <div class="config-grid" id="config-grid"></div>
+  <div class="linha-botoes">
+    <button id="btn-voltar-menu" class="btn rosa">← VOLTAR</button>
+    <button id="btn-comecar" class="btn verde">CONTINUAR ▶</button>
+  </div>
+</section>
+
+<!-- ===== TELA DO JOGO ===== -->
+<section id="tela-jogo" class="tela">
+  <header id="hud">
+    <button id="btn-voltar-jogo" class="btn rosa quadrado">←</button>
+    <div id="turno-info" class="pill verde">🎯 Turno de: <b id="turno-jogador"></b></div>
+    <button id="btn-salvar" class="btn verde">💾 SALVAR</button>
+  </header>
+
+  <div id="paineis"></div>
+
+  <main id="area-tabuleiro">
+    <svg id="mapa" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"></svg>
+  </main>
+
+  <footer id="area-jogador">
+    <div class="caixa">
+      <h3>🃏 Cartas abertas <small>(clique para pegar)</small></h3>
+      <div id="cartas-abertas" class="fileira"></div>
+      <div class="acoes-compra">
+        <button id="btn-comprar-baralho" class="btn azul">🎴 BARALHO <span id="count-baralho"></span></button>
+        <button id="btn-comprar-bilhetes" class="btn laranja">🎫 BILHETES</button>
+      </div>
+      <p id="msg" class="msg"></p>
+    </div>
+    <div class="caixa">
+      <h3>✋ Mão de <b id="nome-atual"></b></h3>
+      <div id="mao" class="fileira"></div>
+      <h3>🎫 Bilhetes secretos</h3>
+      <div id="meus-bilhetes" class="fileira"></div>
+    </div>
+  </footer>
+</section>
+
+<!-- ===== MODAIS ===== -->
+<div id="modal-overlay" class="modal-overlay">
+  <div id="modal" class="modal"></div>
+</div>
+
+<script>
+  // Se a arte da capa existir em img/capa.jpg, ela vira o fundo da tela inicial
+  (() => {
+    const img = new Image();
+    img.onload = () => document.getElementById('tela-menu').classList.add('com-capa');
+    img.src = 'img/capa.png';
+  })();
+</script>
+<script src="js/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+/* ======= ESTRADA COLORIDA — letreiro vinho, ouro, céu de fim de tarde ======= */
+:root{
+  --vinho:#8c1c13;--vinho-esc:#5c0f0a;--creme:#fbf0d4;--papel:#fff8e6;
+  --ouro:#e3b04b;--ouro-esc:#9c6b1c;--noite:#17251f;--tinta:#3a2616;
+  --display:'Alfa Slab One','Rockwell','Georgia',serif;
+  --corpo:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:var(--corpo);color:var(--tinta);min-height:100vh;
+  background:linear-gradient(180deg,#3f7fd0 0,#8fb8e6 30%,#f6c79a 72%,#e59b78 100%) fixed;
+}
+:focus-visible{outline:3px solid var(--ouro);outline-offset:3px}
+h2,h3,h4{font-family:var(--display);font-weight:400}
+.tela{display:none}
+.tela.ativa{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;gap:16px;padding:12px}
+
+/* ===== CAPA ===== */
+#tela-menu{
+  position:relative;isolation:isolate;overflow:hidden;align-items:center;justify-content:flex-end;
+  text-align:center;padding:0 16px clamp(18px,5vh,46px);gap:16px;
+  background:linear-gradient(180deg,#3f7fd0 0,#8fb8e6 38%,#f6c79a 72%,#e59b78 100%);
+}
+/* com a arte em img/capa.jpg, ela vira o fundo (classe .com-capa é posta pelo index.html) */
+#tela-menu.com-capa{background:url(../img/capa.png) 50% 0/cover no-repeat var(--noite)}
+#tela-menu::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,transparent 50%,rgba(15,24,19,.6) 76%,rgba(15,24,19,.94) 100%);
+}
+
+/* letreiro em CSS: aparece só se a arte da capa não existir */
+.menu-topo{margin:auto 0;display:flex;flex-direction:column;align-items:center;gap:12px}
+.titulo{
+  font-family:var(--display);font-weight:400;color:var(--creme);
+  font-size:clamp(2.2rem,7vw,4.4rem);line-height:1;letter-spacing:.02em;padding:.3em .85em .4em;
+  background:linear-gradient(180deg,#a82a20,#6c120c);border:5px double var(--ouro);
+  border-radius:34px 34px 14px 14px/46px 46px 14px 14px;
+  text-shadow:0 3px 0 #3d0a07,0 7px 14px rgba(0,0,0,.4);
+  box-shadow:0 10px 24px rgba(0,0,0,.35),inset 0 0 0 3px #6c120c;
+}
+.lema{font:italic 600 clamp(1rem,2.6vw,1.5rem) Georgia,serif;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.45)}
+#tela-menu.com-capa .menu-topo{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+
+/* botões da capa = bilhetes com picote e furos laterais */
+.menu-botoes{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:14px;
+  filter:drop-shadow(0 5px 0 rgba(20,8,3,.45)) drop-shadow(0 14px 16px rgba(0,0,0,.35));
+}
+.menu-botoes .btn.grande{
+  --furo:radial-gradient(circle 9px at 0 50%,#0000 97%,#000) left/51% 100% no-repeat,
+         radial-gradient(circle 9px at 100% 50%,#0000 97%,#000) right/51% 100% no-repeat;
+  -webkit-mask:var(--furo);mask:var(--furo);
+  position:relative;min-width:240px;padding:17px 38px;border:2px solid var(--ouro);border-radius:6px;
+  font-family:var(--display);font-weight:400;font-size:1.15rem;letter-spacing:.06em;box-shadow:none;
+  animation:emitir .6s cubic-bezier(.2,.8,.2,1) both;
+}
+.menu-botoes .btn.grande::after{
+  content:"";position:absolute;inset:5px 15px;border:1.5px dashed rgba(255,236,190,.55);
+  border-radius:3px;pointer-events:none;
+}
+.menu-botoes .btn.grande:nth-child(2){animation-delay:.1s}
+.menu-botoes .btn.grande:nth-child(3){animation-delay:.2s}
+.menu-botoes .btn.grande:hover{transform:translateY(-4px)}
+.menu-botoes .btn.verde{background:linear-gradient(#b3291f,#6e130d);color:var(--creme)}
+.menu-botoes .btn.azul{background:linear-gradient(#4a8be0,#24508f)}
+.menu-botoes .btn.laranja{background:linear-gradient(#f5c460,#c9801f);color:var(--tinta);text-shadow:0 1px 0 rgba(255,255,255,.4)}
+@keyframes emitir{from{opacity:0;transform:translateY(26px) rotate(-1.5deg)}}
+.versao{color:rgba(251,240,212,.8);font-style:italic;letter-spacing:.12em;font-size:.82rem;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+
+/* retrato (celular): arte no topo, bilhetes empilhados embaixo */
+@media (max-aspect-ratio:1/1){
+  #tela-menu.com-capa{background:url(../img/Ticket\ to\ Ride_\ Explore\ e\ Viaje.png) 50% 0/165% auto no-repeat var(--noite)}
+  #tela-menu::before{background:linear-gradient(180deg,transparent calc(110vw - 90px),var(--noite) calc(110vw + 12px))}
+  .menu-botoes{flex-direction:column;width:min(100%,340px)}
+  .menu-botoes .btn.grande{min-width:0;width:100%}
+}
+
+/* ===== BOTÕES ===== */
+.btn{
+  border:2px solid rgba(255,240,200,.55);cursor:pointer;color:#fff;font:inherit;font-weight:700;letter-spacing:.04em;
+  border-radius:12px;padding:11px 20px;text-shadow:0 1px 0 rgba(0,0,0,.35);
+  box-shadow:0 4px 0 rgba(40,15,5,.45),inset 0 1px 0 rgba(255,255,255,.35);
+  transition:transform .12s,box-shadow .12s,filter .12s;
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn.grande{font-size:1.25rem;padding:16px 26px}
+.btn.verde{background:linear-gradient(#3b9a62,#25663f)}
+.btn.azul{background:linear-gradient(#4a8be0,#24508f)}
+.btn.laranja{background:linear-gradient(#f5c460,#c9801f);color:var(--tinta);text-shadow:none}
+.btn.rosa{background:linear-gradient(#b3291f,#6c120c)}
+.btn.cinza{background:linear-gradient(#8c8372,#625a4b)}
+.btn.quadrado{width:46px;height:46px;font-size:1.2rem;padding:0}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
+select.btn option{color:var(--tinta);background:#fff}
+
+/* ===== CONFIG JOGADORES ===== */
+#tela-config{align-items:center;justify-content:center}
+#tela-config h2{
+  color:var(--creme);font-size:clamp(1.6rem,4vw,2.4rem);text-align:center;
+  text-shadow:0 3px 0 var(--vinho-esc),0 7px 14px rgba(0,0,0,.35);
+}
+.config-grid{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.config-card{
+  background:var(--papel);border-radius:14px;padding:18px 22px;width:300px;
+  border:2px solid var(--ouro);border-top:8px solid var(--cor);box-shadow:0 8px 18px rgba(40,15,5,.3);
+}
+.config-card input{
+  width:100%;padding:10px;border-radius:8px;border:2px solid #e2d3a8;font:inherit;font-size:1rem;margin:8px 0;background:#fff;
+}
+.avatares{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.avatares button{font-size:1.5rem;background:#fff;border:2px solid #e2d3a8;border-radius:10px;cursor:pointer;padding:4px 8px;transition:transform .12s}
+.avatares button.sel{border-color:var(--cor);background:#fffbe8;transform:scale(1.12);box-shadow:0 0 0 2px var(--ouro)}
+.linha-botoes{display:flex;gap:14px}
+.qtd-botoes{text-align:center;color:var(--creme);font-weight:800;margin-bottom:10px;text-shadow:0 2px 0 rgba(60,15,8,.55)}
+.qtd-botoes .qbtn{margin:4px;min-width:48px;font-size:1.1rem}
+.qtd-botoes .qbtn.sel{background:linear-gradient(#b3291f,#6c120c);border-color:var(--ouro)}
+.qtd-botoes .qbtn:disabled{opacity:.9}
+
+/* ===== HUD ===== */
+#hud{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pill{
+  background:linear-gradient(#a82a20,#6c120c);color:var(--creme);border:2px solid var(--ouro);
+  border-radius:999px;padding:9px 20px;font-weight:700;box-shadow:0 4px 0 rgba(40,15,5,.4);
+}
+#paineis{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.painel-jogador{
+  background:var(--papel);border-radius:12px;padding:8px 16px;display:flex;gap:12px;align-items:center;
+  box-shadow:0 4px 10px rgba(40,15,5,.25);border:3px solid #e2d3a8;border-left:8px solid var(--pc);
+  min-width:210px;transition:transform .2s,box-shadow .2s;
+}
+.painel-jogador.ativo{border-color:var(--pc);transform:translateY(-3px);box-shadow:0 8px 18px rgba(40,15,5,.35),0 0 0 3px var(--ouro)}
+.avatar-mini{
+  font-size:2rem;background:#fff;border-radius:50%;width:52px;height:52px;
+  display:flex;align-items:center;justify-content:center;border:3px solid var(--pc,#ddd);
+}
+.stats{color:#7a6444;font-size:.85rem;display:flex;gap:10px}
+.stats span{font-weight:bold;color:var(--tinta)}
+
+/* ===== MAPA (pergaminho) ===== */
+#area-tabuleiro{display:flex;justify-content:center}
+#mapa{
+  width:min(100%,1050px);height:auto;border-radius:16px;border:8px solid #6b4a2b;
+  background:
+    repeating-linear-gradient(0deg,rgba(120,80,30,.06) 0 1px,transparent 1px 40px),
+    repeating-linear-gradient(90deg,rgba(120,80,30,.06) 0 1px,transparent 1px 40px),
+    radial-gradient(ellipse at 50% 40%,#f6e9c3 0,#ecdcae 62%,#d9c28a 100%);
+  box-shadow:inset 0 0 0 3px var(--ouro),inset 0 0 50px rgba(120,80,30,.35),0 10px 24px rgba(40,15,5,.4);
+}
+#mapa text{
+  fill:var(--tinta);font-size:11px;font-family:var(--corpo);pointer-events:none;font-weight:800;
+  paint-order:stroke;stroke:var(--creme);stroke-width:4;
+}
+.cidade{fill:var(--creme);stroke:var(--vinho);stroke-width:2.5}
+.cidade-anel{fill:none;stroke:var(--ouro-esc);stroke-width:2;stroke-dasharray:3 3}
+.rota{stroke-width:9;fill:none;cursor:pointer;stroke-linecap:round;transition:stroke-width .2s,opacity .2s}
+.rota:hover{stroke-width:12!important;opacity:1!important;filter:drop-shadow(0 0 3px rgba(255,255,255,.95))}
+.rota.tomada{filter:drop-shadow(0 0 4px rgba(0,0,0,.5))}
+.dormente{stroke:#7a5632;stroke-width:8;stroke-linecap:round}
+.trilho{stroke:#3a2a1c;stroke-width:2.2}
+
+/* ===== RODAPÉ ===== */
+#area-jogador{display:flex;gap:14px;flex-wrap:wrap}
+.caixa{
+  flex:1;min-width:300px;background:var(--papel);border-radius:14px;padding:12px 16px;
+  border:2px solid var(--ouro);box-shadow:0 8px 16px rgba(40,15,5,.25);
+}
+.caixa h3{color:var(--vinho);margin-bottom:6px;font-size:1.05rem}
+.caixa h3 small{font-family:var(--corpo);color:#8a7350;font-size:.75rem}
+.fileira{display:flex;gap:8px;flex-wrap:wrap;align-items:center;min-height:60px}
+.acoes-compra{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+.msg{margin-top:8px;color:var(--vinho);font-weight:700}
+
+/* cartas de trem: borda creme como as da foto */
+.carta{
+  width:54px;height:70px;border-radius:9px;color:#fff;cursor:pointer;position:relative;
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+  border:3px solid var(--papel);animation:fadein .25s;
+  box-shadow:0 0 0 1px rgba(60,35,10,.35),0 4px 8px rgba(40,15,5,.3),
+             inset 0 -14px 18px rgba(0,0,0,.12),inset 0 10px 14px rgba(255,255,255,.18);
+  transition:transform .15s;
+}
+.carta:hover{transform:translateY(-8px) rotate(-2deg) scale(1.06)}
+.carta .n{position:absolute;bottom:3px;font-size:.55rem;letter-spacing:1px;text-shadow:0 1px 0 rgba(0,0,0,.3)}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}}
+/* cores iguais às das rotas do mapa (definidas no game.js) */
+.cor-vermelha{background:#ff6b6b}.cor-azul{background:#4dabf7}.cor-verde{background:#51cf66}
+.cor-amarela{background:#ffd43b;color:#7a5c00}.cor-rosa{background:#f783ac}.cor-laranja{background:#ffa94d}
+.cor-preta{background:#495057}.cor-branca{background:#f1f3f5;color:#666}
+.cor-coringa{background:linear-gradient(135deg,#ff6b6b,#4dabf7,#51cf66,#ffd43b)}
+.cor-cinza{background:#adb5bd}
+
+.bilhete{
+  background:#fff3d6;border:2px dashed var(--ouro-esc);border-radius:8px;padding:5px 12px;font-size:.78rem;
+  color:#7a4b00;font-weight:bold;box-shadow:0 2px 6px rgba(40,15,5,.18);animation:fadein .25s;
+}
+.bilhete.concluido{background:#dff5dc;border-color:#2f8f4a;color:#256b3a}
+
+/* ===== MODAL ===== */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(23,37,31,.6);backdrop-filter:blur(3px);
+  align-items:center;justify-content:center;z-index:10;
+}
+.modal-overlay.aberto{display:flex}
+.modal{
+  background:var(--papel);border-radius:16px;padding:22px 26px;max-width:600px;width:92%;max-height:85vh;overflow:auto;
+  border:4px solid var(--vinho);animation:abre .22s ease-out;
+  box-shadow:0 18px 50px rgba(0,0,0,.5),inset 0 0 0 3px var(--papel),inset 0 0 0 5px var(--ouro);
+}
+@keyframes abre{from{opacity:0;transform:translateY(14px) scale(.97)}}
+.modal h3{color:var(--vinho);margin-bottom:8px}
+.modal h4{color:var(--vinho);margin:12px 0 4px;font-size:1rem}
+.modal .btn{margin:6px 4px}
+.modal input[type=checkbox]{accent-color:var(--vinho);width:1.1em;height:1.1em;margin-right:6px;vertical-align:middle}
+.rota-opcao{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fff;
+  border-left:5px solid var(--ouro);border-radius:10px;padding:6px 12px;margin:5px 0;box-shadow:0 2px 5px rgba(40,15,5,.12);
+}
+.rota-opcao span{font-size:.85rem}
+.rota-opcao button{padding:6px 12px;font-size:.8rem}
+
+@media (max-width:700px){
+  .config-card{width:100%}
+  .btn.grande{font-size:1rem}
+  .painel-jogador{min-width:0;flex:1 1 150px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
